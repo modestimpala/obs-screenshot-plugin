@@ -49,7 +49,7 @@ function Build {
     $script:DepsVersion = ''
     $script:QtVersion = '6'
     $script:VisualStudioVersion = ''
-    $script:PlatformSDK = '10.0.19041.0'
+    $script:PlatformSDK = '10.0.20348.0'
 
     Setup-Host
 
