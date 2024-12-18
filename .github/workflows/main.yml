@@ -117,7 +117,9 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: ${{ env.PLUGIN_NAME }}-windows-${{ matrix.arch }}-${{ steps.setup.outputs.commitHash }}
-          path: ${{ github.workspace }}/plugin/release/${{ env.PLUGIN_NAME }}-*.zip D:/a/obs-screenshot-plugin/obs-screenshot-plugin/obs-studio/plugin_build_x64/libobs/RelWithDebInfo/obs.lib
+          path: |
+            ${{ github.workspace }}/plugin/release/${{ env.PLUGIN_NAME }}-*.zip ${{ github.workspace }}/obs-studio/plugin_build_x64/libobs/RelWithDebInfo/obs.lib
+          # ${{ github.workspace }}/obs-build-dependencies/plugin-deps-2024-09-12-qt6-x64/bin/64bit/obs.lib
 
       - name: Package Plugin Installer
         if: ${{ startsWith(github.ref, 'refs/tags/') && github.event_name != 'pull_request' }}
