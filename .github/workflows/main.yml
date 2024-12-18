@@ -23,7 +23,7 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           submodules: recursive
 
@@ -45,7 +45,7 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        arch: [x86, x64]
+        arch: [x64]
     if: always()
     needs: [clang_check]
     outputs:
@@ -55,13 +55,13 @@ jobs:
         shell: pwsh
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           path: plugin
           submodules: recursive
 
       - name: Checkout obs-studio
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           repository: 'obsproject/obs-studio'
           path: obs-studio
@@ -114,7 +114,7 @@ jobs:
 
       - name: Upload Build Artifact
         if: ${{ success() && (github.event_name != 'pull_request' || steps.seekingTesters.outputs.found == 'true') }}
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ env.PLUGIN_NAME }}-windows-${{ matrix.arch }}-${{ steps.setup.outputs.commitHash }}
           path: ${{ github.workspace }}/plugin/release/${{ env.PLUGIN_NAME }}-*.zip
@@ -130,7 +130,7 @@ jobs:
 
       - name: Upload Installer Artifact
         if: ${{ startsWith(github.ref, 'refs/tags/') && github.event_name != 'pull_request' }}
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ env.PLUGIN_NAME }}-windows-${{ matrix.arch }}-${{ steps.setup.outputs.commitHash }}-installer
           path: ${{ github.workspace }}/plugin/release/${{ env.PLUGIN_NAME }}-*.exe
@@ -151,7 +151,7 @@ jobs:
           echo "::set-output name=version::${GITHUB_REF/refs\/tags\//}"
 
       - name: Download build artifacts
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
 
       - name: Generate Checksums
         run: |
@@ -164,7 +164,7 @@ jobs:
 
       - name: Create Release
         id: create_release
-        uses: softprops/action-gh-release@1e07f4398721186383de40550babbdf2b84acfc5
+        uses: softprops/action-gh-release@v2
         with:
           draft: false
           prerelease: ${{ contains(steps.metadata.outputs.version, 'rc') || contains(steps.metadata.outputs.version, 'beta') }}
