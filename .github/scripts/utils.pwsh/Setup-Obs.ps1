@@ -70,7 +70,7 @@ function Setup-Obs {
 
         Log-Information 'Building libobs and obs-frontend-api...'
         $CmakeArgs = @(
-            '--config', "$( if ( $script:Configuration -eq '' ) { 'RelWithDebInfo' } else { $script:Configuration })"
+            '--config', "$( if ( $script:Configuration -eq '' ) { 'Release' } else { $script:Configuration })"
         )
 
         if ( $VerbosePreference -eq 'Continue' ) {

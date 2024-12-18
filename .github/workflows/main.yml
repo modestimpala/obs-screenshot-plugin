@@ -74,7 +74,7 @@ jobs:
         run: |
           ## SETUP ENVIRONMENT SCRIPT
           $CommitHash = (git rev-parse HEAD)[0..8] -join ''
-          Write-Output "::set-output name=commitHash::${CommitHash}"
+          echo "commitHash=${CommitHash}" >> $GITHUB_ENV
 
       - name: Check for GitHub Labels
         id: seekingTesters
@@ -95,14 +95,14 @@ jobs:
             $false
           }
 
-          Write-Output "::set-output name=found::$(([string]${LabelFound}).ToLower())"
+          echo "found=$(([string]${LabelFound}).ToLower())" >> $GITHUB_ENV
 
       - name: Build Plugin
         uses: ./plugin/.github/actions/build-plugin
         with:
           workingDirectory: ${{ github.workspace }}/plugin
           target: ${{ matrix.arch }}
-          config: RelWithDebInfo
+          config: Release
           visualStudio: 'Visual Studio 17 2022'
 
       - name: Package Plugin
@@ -110,7 +110,7 @@ jobs:
         with:
           workingDirectory: ${{ github.workspace }}/plugin
           target: ${{ matrix.arch }}
-          config: RelWithDebInfo
+          config: Release
 
       - name: Upload Build Artifact
         if: ${{ success() && (github.event_name != 'pull_request' || steps.seekingTesters.outputs.found == 'true') }}
@@ -119,7 +119,7 @@ jobs:
           name: ${{ env.PLUGIN_NAME }}-windows-${{ matrix.arch }}-${{ steps.setup.outputs.commitHash }}
           path: |
             ${{ github.workspace }}/plugin/release/${{ env.PLUGIN_NAME }}-*.zip
-            ${{ github.workspace }}/obs-studio/plugin_build_x64/libobs/RelWithDebInfo/obs.lib
+            ${{ github.workspace }}/obs-studio/plugin_build_x64/libobs/Release/obs.lib
           # ${{ github.workspace }}/obs-build-dependencies/plugin-deps-2024-09-12-qt6-x64/bin/64bit/obs.lib
 
       - name: Package Plugin Installer
@@ -128,7 +128,7 @@ jobs:
         with:
           workingDirectory: ${{ github.workspace }}/plugin
           target: ${{ matrix.arch }}
-          config: RelWithDebInfo
+          config: Release
           createInstaller: true
 
       - name: Upload Installer Artifact
@@ -151,7 +151,7 @@ jobs:
         id: metadata
         run: |
           ## METADATA SCRIPT
-          echo "::set-output name=version::${GITHUB_REF/refs\/tags\//}"
+          echo "version=${GITHUB_REF/refs\/tags\//}" >> $GITHUB_ENV
 
       - name: Download build artifacts
         uses: actions/download-artifact@v4

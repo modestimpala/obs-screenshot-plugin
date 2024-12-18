@@ -58,7 +58,7 @@ Usage: %B${functrace[1]%:*}%b <option> [<options>]
 %F{yellow} Package configuration options%f
  -----------------------------------------------------------------------------
   %B-t | --target%b                     Specify target - default: %B%F{green}${host_os}-${CPUTYPE}%f%b
-  %B-c | --config%b                     Build configuration - default: %B%F{green}RelWithDebInfo%f%b
+  %B-c | --config%b                     Build configuration - default: %B%F{green}Release%f%b
   %B-s | --codesign%b                   Enable codesigning (macOS only)
   %B-n | --notarize%b                   Enable notarization (macOS only)
 
@@ -184,7 +184,7 @@ Usage: %B${functrace[1]%:*}%b <option> [<options>]
     if (( _loglevel > 1 )) cmake_args+=(--verbose)
 
     pushd ${project_root}
-    cmake --build build_${target##*-} --config ${BUILD_CONFIG:-RelWithDebInfo} -t package ${cmake_args}
+    cmake --build build_${target##*-} --config ${BUILD_CONFIG:-Release} -t package ${cmake_args}
     popd
   }
 }

@@ -74,7 +74,7 @@ Usage: %B${functrace[1]%:*}%b <option> [<options>]
 %F{yellow} Build configuration options%f
  -----------------------------------------------------------------------------
   %B-t | --target%b                     Specify target - default: %B%F{green}${host_os}-${CPUTYPE}%f%b
-  %B-c | --config%b                     Build configuration - default: %B%F{green}RelWithDebInfo%f%b
+  %B-c | --config%b                     Build configuration - default: %B%F{green}Release%f%b
   %B-s | --codesign%b                   Enable codesigning (macOS only)
   %B--generator%b                       Specify build system to generate - default: %B%F{green}Ninja%f%b
                                     Available generators:
@@ -192,7 +192,7 @@ Usage: %B${functrace[1]%:*}%b <option> [<options>]
 
     local _plugin_deps="${project_root:h}/obs-build-dependencies/plugin-deps-${OBS_DEPS_VERSION}-qt${QT_VERSION}-${target##*-}"
     local -a cmake_args=(
-      -DCMAKE_BUILD_TYPE=${BUILD_CONFIG:-RelWithDebInfo}
+      -DCMAKE_BUILD_TYPE=${BUILD_CONFIG:-Release}
       -DQT_VERSION=${QT_VERSION}
       -DCMAKE_PREFIX_PATH="${_plugin_deps}"
     )
@@ -233,13 +233,13 @@ Usage: %B${functrace[1]%:*}%b <option> [<options>]
     local -a cmake_args=()
     if (( _loglevel > 1 )) cmake_args+=(--verbose)
     if [[ ${generator} == 'Unix Makefiles' ]] cmake_args+=(--parallel ${num_procs})
-    cmake --build build_${target##*-} --config ${BUILD_CONFIG:-RelWithDebInfo} ${cmake_args}
+    cmake --build build_${target##*-} --config ${BUILD_CONFIG:-Release} ${cmake_args}
   }
 
   log_info "Installing ${product_name}..."
   local -a cmake_args=()
   if (( _loglevel > 1 )) cmake_args+=(--verbose)
-  cmake --install build_${target##*-} --config ${BUILD_CONFIG:-RelWithDebInfo} --prefix "${project_root}/release" ${cmake_args}
+  cmake --install build_${target##*-} --config ${BUILD_CONFIG:-Release} --prefix "${project_root}/release" ${cmake_args}
   popd
 }
 

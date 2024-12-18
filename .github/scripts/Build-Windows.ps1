@@ -1,7 +1,7 @@
 [CmdletBinding()]
 param(
     [ValidateSet('Debug', 'RelWithDebInfo', 'Release', 'MinSizeRel')]
-    [string] $Configuration = 'RelWithDebInfo',
+    [string] $Configuration = 'Release',
     [ValidateSet('x86', 'x64')]
     [string] $Target,
     [ValidateSet('Visual Studio 17 2022', 'Visual Studio 16 2019')]
