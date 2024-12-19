@@ -39,7 +39,7 @@ jobs:
       - name: Run cmake-format
         run: ./.github/scripts/check-cmake.sh
 
-  windows_build and release:
+  windows_build_and_release:
     name: 02 - Windows
     runs-on: windows-latest
     strategy:
