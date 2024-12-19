@@ -142,10 +142,12 @@ jobs:
         id: create_release
         uses: softprops/action-gh-release@v2
         with:
+          tag_name: ${{ github.run_number }}
+          name: "${{ env.PLUGIN_NAME }} ${{ steps.metadata.outputs.version }}"
           draft: false
           prerelease: false
-          tag_name: ${{ steps.metadata.outputs.version }}
-          name: "${{ env.PLUGIN_NAME }} ${{ steps.metadata.outputs.version }}"
           files: |
             ${{ github.workspace }}/plugin/release/${{ env.PLUGIN_NAME }}-*.zip
             ${{ github.workspace }}/obs-studio/plugin_build_x64/libobs/Release/obs.lib
+        env:
+          PLUGIN_NAME: obs-screenshot-filter
