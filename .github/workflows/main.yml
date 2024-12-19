@@ -41,7 +41,7 @@ jobs:
 
   windows_build:
     name: 02 - Windows
-    runs-on: windows-2022
+    runs-on: windows-latest
     strategy:
       fail-fast: true
       matrix:
@@ -140,12 +140,12 @@ jobs:
 
   make-release:
     name: 03 - Create and upload release
-    runs-on: ubuntu-22.04
+    runs-on: windows-latest
     if: github.event_name == 'push' && contains(github.ref, 'refs/tags/')
     needs: [windows_build]
     defaults:
       run:
-        shell: bash
+        shell: pwsh
     steps:
       - name: Get Metadata
         id: metadata
@@ -162,7 +162,7 @@ jobs:
           shopt -s extglob
           echo "### Checksums" > ${{ github.workspace }}/CHECKSUMS.txt
           for file in ${{ github.workspace }}/**/@(*.pkg|*.exe|*.deb|*.zip); do
-            echo "    ${file##*/}: $(sha256sum "${file}" | cut -d " " -f 1)" >> ${{ github.workspace }}/CHECKSUMS.txt
+            echo "    ${file##*/}: $(CertUtil -hashfile "${file}" SHA256 | cut -d " " -f 1)" >> ${{ github.workspace }}/CHECKSUMS.txt
           done
 
       - name: Create Release
