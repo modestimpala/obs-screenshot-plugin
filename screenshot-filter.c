@@ -226,7 +226,7 @@ static obs_properties_t *screenshot_filter_properties(void *data)
 					   is_timer_enable_modified);
 
 	obs_properties_add_float(props, SETTING_INTERVAL, "Interval (seconds)",
-				 0.25, 86400, 0.25);
+				 0.000001, 86400, 0.000001);
 
 	obs_properties_add_bool(props, SETTING_RAW, "Raw image");
 
